@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste JS</title>
+</head>
+<body>
+    <h1>Teste de upload!!</h1>
+
+    <form>
+        <input type="file" name="pdf_creator" id="pdf" accept="image/png, image/jpeg, image/jpg" multiple>
+        <input type="Button" value="Download PDF" onclick="funcao_pdf()">
+    </form>
+
+    <script>
+        var reader = new FileReader();
+        var pdf = document.getElementById('pdf')
+        var fileIndex = 0;
+        var arquivos = [];
+
+        function funcao_pdf(){           
+            console.log(arquivos);
+            var janela = window.open('', '', 'width=1280,height=720')
+            janela.document.write('<html><head>');
+            janela.document.write('<title>Portifolio</title></head>');
+            janela.document.write('<body>');
+            arquivos.forEach(v => {[
+                janela.document.write(`<img style="width: 50%" src="${v}">`)
+            ]})
+            janela.document.write('<body></html>');
+            janela.document.close();
+            setTimeout(() => {
+                janela.print(); 
+            }, 5000);                 
+        }
+
+        document.getElementById('pdf').onchange = function(e){
+            readNextFile();
+        }
+
+        reader.onload = function(e) {
+            console.log(e);
+            arquivos.push(e.target.result);
+            readNextFile();
+        }
+                   
+        function readNextFile(){
+            if (fileIndex < pdf.files.length){
+                reader.readAsDataURL(pdf.files[fileIndex++])
+            }
+        }
+
+        
+    </script>
+</body>
+</html>
